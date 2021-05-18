@@ -5,6 +5,8 @@ branding:
   color: blue
   icon: anchor
 inputs:
+  owner:
+    description: "Set the name of the owner if differs from git."
   version:
     description: "The chart-releaser version to use (default: v1.2.1)"
   config:
@@ -21,7 +23,12 @@ runs:
         owner=$(cut -d '/' -f 1 <<< "$GITHUB_REPOSITORY")
         repo=$(cut -d '/' -f 2 <<< "$GITHUB_REPOSITORY")
 
-        args=(--owner "$owner" --repo "$repo")
+        if [[ -n "${{ inputs.owner }}" ]]; then
+            args=(--owner "${{ inputs.owner }}")
+        else
+            args=(--owner "$owner" --repo "$repo")
+        fi
+
         args+=(--charts-dir "${{ inputs.charts_dir }}")
 
         if [[ -n "${{ inputs.version }}" ]]; then
