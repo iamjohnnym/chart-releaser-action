@@ -260,6 +260,11 @@ update_index() {
     fi
 
     echo 'Updating charts repo index...'
+    echo "$owner"
+    echo "$repo"
+    echo "$charts_repo_url"
+    echo "$config"
+    echo "${args[@]}"
     cr index "${args[@]}"
 }
 
