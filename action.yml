@@ -24,7 +24,7 @@ runs:
         repo=$(cut -d '/' -f 2 <<< "$GITHUB_REPOSITORY")
 
         if [[ -n "${{ inputs.owner }}" ]]; then
-            args=(--owner "${{ inputs.owner }}")
+            args=(--owner "${{ inputs.owner }} --repo "$repo")
         else
             args=(--owner "$owner" --repo "$repo")
         fi
