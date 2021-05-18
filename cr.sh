@@ -18,7 +18,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-DEFAULT_CHART_RELEASER_VERSION=v1.2.2
+DEFAULT_CHART_RELEASER_VERSION=v1.2.3
 
 show_help() {
 cat << EOF
@@ -255,7 +255,7 @@ release_charts() {
     echo "${args[@]}"
 
     echo 'Releasing charts...'
-    # cr upload "${args[@]}"
+    cr upload "${args[@]}"
 }
 
 update_index() {
@@ -270,7 +270,7 @@ update_index() {
     echo "$charts_repo_url"
     echo "$config"
     echo "${args[@]}"
-    # cr index "${args[@]}"
+    #cr index "${args[@]}"
 }
 
 main "$@"
