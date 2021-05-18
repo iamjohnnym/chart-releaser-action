@@ -70,12 +70,12 @@ main() {
         for chart in "${changed_charts[@]}"; do
             if [[ -d "$chart" ]]; then
                 package_chart "$chart"
+                release_azure_chart "$chart"
             else
                 echo "Chart '$chart' no longer exists in repo. Skipping it..."
             fi
         done
-
-        release_charts
+        #release_charts
         update_index
     else
         echo "Nothing to do. No chart changes detected."
@@ -243,16 +243,26 @@ package_chart() {
     cr package "${args[@]}"
 }
 
+release_azure_chart() {
+    local chart="$1"
+
+    local args=(-n "$owner" .cr-release-packages/"$chart")
+    if [[ -n "$config" ]]; then
+        args+=(--config "$config")
+    fi
+    echo "$owner"
+    echo "$chart"
+    echo "${args[@]}"
+
+    echo 'Releasing Azure charts...'
+    az acr helm push "${args[@]}"
+}
+
 release_charts() {
     local args=(-o "$owner" -r "$repo" -c "$(git rev-parse HEAD)")
     if [[ -n "$config" ]]; then
         args+=(--config "$config")
     fi
-    echo "$owner"
-    echo "$repo"
-    echo "$(git rev-parse HEAD)"
-    echo "$config"
-    echo "${args[@]}"
 
     echo 'Releasing charts...'
     cr upload "${args[@]}"
@@ -265,11 +275,6 @@ update_index() {
     fi
 
     echo 'Updating charts repo index...'
-    echo "$owner"
-    echo "$repo"
-    echo "$charts_repo_url"
-    echo "$config"
-    echo "${args[@]}"
     #cr index "${args[@]}"
 }
 
