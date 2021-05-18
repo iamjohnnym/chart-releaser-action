@@ -248,9 +248,14 @@ release_charts() {
     if [[ -n "$config" ]]; then
         args+=(--config "$config")
     fi
+    echo "$owner"
+    echo "$repo"
+    echo "$(git rev-parse HEAD)"
+    echo "$config"
+    echo "${args[@]}"
 
     echo 'Releasing charts...'
-    cr upload "${args[@]}"
+    # cr upload "${args[@]}"
 }
 
 update_index() {
@@ -265,7 +270,7 @@ update_index() {
     echo "$charts_repo_url"
     echo "$config"
     echo "${args[@]}"
-    cr index "${args[@]}"
+    # cr index "${args[@]}"
 }
 
 main "$@"
